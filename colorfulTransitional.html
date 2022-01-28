@@ -1,0 +1,358 @@
+<!doctype html>
+
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<title>A Colorful Summary of Transitional Modeling</title>
+		<style type="text/css">
+		body {
+			font-family: Arial, Helvetica, sans-serif;
+			font-size: 1.5vw;
+			padding: 10ex 10em;
+			line-height: 5ex;
+			text-align: left; 
+   		}
+		div {
+			line-height: normal;
+			display: inline-block;
+		}
+		table {
+			margin-left: auto;
+			margin-right: auto;
+		}
+		td {
+			padding-right: 1ex;
+			text-align: left;
+		}
+		pre {
+			font-size: 1.2vw;
+			color: gray;
+		}
+		.centered {
+			width: 100%;
+			margin: 2ex auto;
+			text-align: center; 
+		}
+		.lefted {
+			text-align: left; 
+		}
+		thing, .thing {
+			color: white;
+			background-color: #3666A2;
+			border-radius: 0.25ex;
+			padding: 0.25ex 0.25em;
+			white-space: nowrap;
+		}
+		role, .role {
+			background-color: #6CABCE;
+			border-radius: 0.25ex;
+			padding: 0.25ex 0.35em;
+			font-style: italic; 
+			white-space: nowrap;
+		}
+		.appearance {
+			background-color: #D1EECB;
+			border-radius: 0.4ex;
+			padding: 0.5ex;
+		}
+		.appearance .thing {
+			margin-left: 0.1ex;			
+			margin-right: 0;						
+		}
+		.appearance .role {
+			margin-right: 0.1ex;			
+			margin-left: 0;						
+		}
+		.appearance_set {
+			background-color: #38A96D;
+			border-radius: 0.6ex;
+			padding: 0.5ex 0.6ex;
+		}
+		value, .value {
+			background-color: #F8BE41;
+			border-radius: 0.4ex;
+			padding: 0.75ex 0.5em;
+			white-space: nowrap;
+		}
+		time, .time {
+			background-color: #D1FFA5;
+			border-radius: 0.4ex;
+			padding: 0.75ex 0.5em;
+			white-space: nowrap;
+		}
+		.posit {
+			background-color: #2A7E40;
+			border-radius: 0.9ex;
+			padding: 0.5ex 1ex 0.5ex 0.5ex;
+		}
+		</style>
+		<script defer>
+			function process_appearance(element, text) {
+				var appearance = text.slice(1, -1).split(',').map(function(v) { return v.trim() });
+				var appearance_div = document.createElement('div');
+				appearance_div.className = 'appearance';
+				element.appendChild(appearance_div);
+				var thing_div = document.createElement('div');
+				thing_div.className = 'thing';
+				appearance_div.append(thing_div);
+				appearance_div.appendChild(document.createTextNode(' '));
+				var thing_text = document.createTextNode(appearance[0]);
+				thing_div.append(thing_text);
+				var role_div = document.createElement('div');
+				role_div.className = 'role';
+				appearance_div.append(role_div);
+				var role_text = document.createTextNode(appearance[1]);
+				role_div.appendChild(role_text);
+			}
+			function process_appearance_set(element, text) {
+				console.log(text);
+				var appearance_set_div = document.createElement('div');
+				appearance_set_div.className = 'appearance_set';
+				element.appendChild(appearance_set_div);
+				element.appendChild(document.createTextNode(' '));
+				var appearances = text.match(/(\([^\)]+\))+/g);
+				console.log(appearances);
+				for(var a = 0; a < appearances.length; a++) {
+					process_appearance(appearance_set_div, appearances[a]);
+					appearance_set_div.appendChild(document.createTextNode(' '));
+				}
+			}
+			function process_posit(element, text) {
+				var posit_div = document.createElement('div');
+				posit_div.className = 'posit';
+				element.appendChild(posit_div);
+				process_appearance_set(posit_div, text);
+				var value = text.match(/"[^"]+"/)[0].slice(1, -1);
+				var value_div = document.createElement('div');
+				value_div.className = 'value';
+				posit_div.appendChild(value_div);
+				posit_div.appendChild(document.createTextNode(' '));
+				var value_text = document.createTextNode(value);
+				value_div.appendChild(value_text);
+				var time = text.match(/'[^'']+'/)[0].slice(1, -1);
+				var time_div = document.createElement('div');
+				time_div.className = 'time';
+				posit_div.appendChild(time_div);
+				var time_text = document.createTextNode(time);
+				time_div.appendChild(time_text);
+			}
+			function process_appearances() {
+				var appearances = document.getElementsByTagName("appearance");
+				for(var i = 0; i < appearances.length; i++) {
+					var appearance = appearances[i].removeChild(appearances[i].firstChild).textContent;
+					process_appearance(appearances[i], appearance);
+				}
+			}
+			function process_appearance_sets() {
+				var appearance_sets = document.getElementsByTagName("set");
+				for(var i = 0; i < appearance_sets.length; i++) {
+					var appearance_set = appearance_sets[i].removeChild(appearance_sets[i].firstChild).textContent;
+					process_appearance_set(appearance_sets[i], appearance_set);
+				}
+			}
+			function process_posits() {
+				var posits = document.getElementsByTagName("posit");
+				for(var i = 0; i < posits.length; i++) {
+					var posit = posits[i].removeChild(posits[i].firstChild).textContent;
+					process_posit(posits[i], posit);
+				}
+			}
+			document.addEventListener("DOMContentLoaded", function(){
+				process_appearances();
+				process_appearance_sets();
+				process_posits();
+			});
+		</script>
+	</head>
+	<body>
+		<div class="centered">
+			<posit>[{(Lars Rönnbäck, colorfully summarizes)}, "Transitional modeling", '2021-01-28']</posit>
+			<br/>
+			<pre>[{(Lars Rönnbäck, colorfully summarizes)}, "Transitional modeling", '2021-01-28']</pre>
+		</div>
+		<br/><br/>
+
+		Transitional Modeling aims to capture the ongoings of real life events in a 
+		simple but powerful format, while minimizing information loss as such events
+		are recorded. At its core it talks about things and the multifaceted situations 
+		these things appear in. Things are represented by <em>unique identifiers</em>, 
+		such as <thing>42</thing> and <thing>89</thing>. When a thing
+		appears in a situation it does so by taking on <em>roles</em>, such as
+		<role>loves</role> and <role>beloved</role>. It is 
+		necessary that anyone who has an opinion about the situation agree upon 
+		which unique identifiers correspond to which things and the meaning of the 
+		roles. This necessary agreement ensures that whatever unique identifiers and roles 
+		represent are interpreted equally for every involved party regardless of when, 
+		where, or how interpretations are made.
+		<br/><br/>
+
+		Together, identifiers and roles can be used to form <em>appearances</em>:
+		<appearance>(42, loves)</appearance> and <appearance>(89, beloved)</appearance>.
+		Technically, an appearance is an ordered pair, consisting of an identifier for a thing 
+		and a role this thing has appeared or will appear through. From the example it can be determined 
+		that the thing represented by <thing>42</thing> has at some point appeared as one who 
+		<role>loves</role> something and <thing>89</thing> as a thing 
+		<role>beloved</role>. Given this, it is still undetermined who <thing>42</thing>
+		<role>loves</role> and by whom <thing>89</thing> is <role>beloved</role>.
+		In order to relate the things to each other an <em>appearance set</em> is needed, such as  
+		<set>{(42, loves), (89, beloved)}</set>. Only then can we know that 
+		<thing>42</thing> <role>loves</role> <thing>89</thing> and that 
+		<thing>89</thing> is the <role>beloved</role> of <thing>42</thing>. 
+		When a thing appears to have a certain property, rather than 
+		a relationship to other things, the appearance set will only contain one appearane, such as 
+		<appearance>(42, has name)</appearance>. An appearance set has one or more appearances as members and it provides the base upon 
+		which we can bestow a value.  
+		<br/><br/>
+
+
+		While <thing>42</thing> and <thing>89</thing> have become forever and uniquely bound to the things they represent, 
+		experience tells us that <role>loves</role> and <role>beloved</role> may be transitional states. An accurate
+		description needs to qualify or quantify the relationship using an <em>appearing value</em>, such as <value>actively felt</value>, and
+		an <em>appearance time</em>, such as <time>2009-09-21</time>, indicating since when this value has been in effect. 
+		All together these form a <em>posit</em>:
+		<div class="centered">
+			<posit>[{(42, loves), (89, beloved)}, "actively felt", '2009-09-21']</posit>
+		</div>
+		A posit binds an appearance set to an appearaing value at an appearance time. We now know that 
+		<thing>42</thing> <role>loves</role> <thing>89</thing>, <thing>89</thing> is the <role>beloved</role> of <thing>42</thing>, and it is <value>actively felt</value> since 
+		<time>2009-09-21</time>. However, such knowledge relies on every posit being confidently and unquestionably true. It is therefore 
+		frail knowledge, since it fails to capture the inherently uncertain and conflicted nature of information. Anything built upon frail knowledge 
+		may come down crashing when reality makes itself heard and the gaps prove unfillable. 
+		<br/><br/>
+
+		The solution is to 
+		explicitly make it possible to express doubt and disagreement about posits, instead of assuming them to be 
+		confidently and unquestionably true.
+		Let us assume that <thing>89</thing> thinks it very likely that <thing>42</thing> <role>loves</role> 
+		<thing>89</thing> since <time>2009-09-21</time>, and that this thought was 
+		expressed on <time>2018-02-13</time>. As we may want to prevent individuals from contradicting themselves, the
+		certainty they express towards a posit must be put into numbers, and more specifically into the [&ndash;1, 1] interval. This will 
+		provide us with the capability to mathematically decude if contradictions exist. So, let the notion of "very likely" correspond
+		to a <em>certainty</em> in the interval <value>0.7 &ndash; 0.8</value>. This is no exact science, which is why an 
+		imprecise value in the form of an interval is used. Regular values may also be imprecise, 
+		so there needs to be a presumed agreement among the involved parties with respect to reliabilities and values. 
+		If two individuals both talk about <value>actively felt</value> we will presume they share an equal interpretation, 
+		even if the value itself implicitly expresses some degree of imprecision. Similar reasoning apply to points in time, which 
+		are by their very nature impossible to capture with infinite precision.
+		<br/><br/>
+
+		Given that we now know how <thing>89</thing> expressed themselves, with respect to an existing or at the time of 
+		expression newly created posit, an <em>assertion</em> can be formed, such as:
+		<div class="centered">
+			<table>
+				<tr>
+					<td><thing>555</thing></td>
+					<td><posit>[{(42, loves), (89, beloved)}, "actively felt", '2009-09-21']</posit></td>
+				</tr>
+				<tr>
+					<td></td>
+					<td><posit>[{(89, ascertains), (555, posit)}, "0.7 &ndash; 0.8", '2018-02-13']</posit></td>
+				</tr>
+			</table>
+		</div>
+		An assertion is in itself a posit, using the two <em>reserved</em> roles <role>ascertains</role> and <role>posit</role>.
+		In order for <thing>89</thing> to express an opinion about a posit, the posit must also be associated with a unqiue 
+		identfier, here <thing>555</thing>. Assertions are <em>meta-posits</em>, and they provide additional context to a posit 
+		in the form of how certain some thing deems it to be at some point in time. The appearance time of an assertion is 
+		also called <em>assertion time</em>.
+		<br/><br/>
+
+		Thinking about it some more, <thing>89</thing> became completely certain of the posit. Reconsideration can be captured through 
+		a new assertion, with a later assertion time, here <time>2018-08-20</time>.
+		<div class="centered">
+			<table>
+				<tr>
+					<td><thing>555</thing></td>
+					<td><posit>[{(42, loves), (89, beloved)}, "actively felt", '2009-09-21']</posit></td>
+				</tr>
+				<tr>
+					<td></td>
+					<td><posit>[{(89, ascertains), (555, posit)}, "0.7 &ndash; 0.8", '2018-02-13']</posit></td>
+				</tr>
+				<tr>
+					<td></td>
+					<td><posit>[{(89, ascertains), (555, posit)}, "1", '2018-08-20']</posit></td>
+				</tr>
+			</table>
+		</div>
+		Certainty is also transient, people change their minds all the time. That this is indeed a <em>change</em> can be determined 
+		by the fact that: two posits have the same appearance set but different values at different appearance times. The assertion 
+		in effect is different depending on what time it is. 
+		<br/><br/>
+
+		Just like the assertion in effect can change, so can the original posit. 
+		<div class="centered">
+			<table>
+				<tr>
+					<td><thing>555</thing></td>
+					<td><posit>[{(42, loves), (89, beloved)}, "actively felt", '2009-09-21']</posit></td>
+				</tr>
+				<tr>
+					<td><thing>556</thing></td>
+					<td><posit>[{(42, loves), (89, beloved)}, "felt no longer", '2011-11-11']</posit></td>
+				</tr>
+			</table>
+		</div>		
+		Since this posit is different it will be associated with a new unique identfier. This posit indicates a change, but given
+		that we still haven't seen any assertions, we do not know if this is actually how <thing>42</thing> and <thing>89</thing>
+		feels. They express their opinions of the new posit <thing>556</thing> in the following assertions.
+		<div class="centered">
+			<table>
+				<tr>
+					<td></td>
+					<td><posit>[{(42, ascertains), (556, posit)}, "-1", '2018-08-20']</posit></td>
+				</tr>
+				<tr>
+					<td></td>
+					<td><posit>[{(89, ascertains), (556, posit)}, "1", '2018-08-20']</posit></td>
+				</tr>
+			</table>
+		</div>
+		While <thing>89</thing> is certain of the posit, <thing>42</thing> is certain it's not the case. This is an example of 
+		a concurrent disagreement between the two <em>asserters</em>. Perhaps <thing>89</thing> fell out of love, while 
+		<thing>42</thing> did not.
+		<br/><br/>
+
+		People do err sometimes though. Not long after, <thing>89</thing> realizes their mistake and needs to somehow mend 
+		the whole situation, and expresses the following.
+		<div class="centered">
+			<table>
+				<tr>
+					<td></td>
+					<td><posit>[{(89, ascertains), (556, posit)}, "0", '2018-09-22']</posit></td>
+				</tr>
+				<tr>
+					<td></td>
+					<td><posit>[{(89, ascertains), (555, posit)}, "1", '2018-09-22']</posit></td>
+				</tr>
+			</table>
+		</div>
+		The first assertion has a certainty of 0, complete uncertainty, also known as a <em>retraction</em>. Since <time>2018-09-22</time>
+		<thing>89</thing> has no opinion at all about the posit <thing>556</thing>. Instead, <thing>89</thing> restates their
+		opinion towards <thing>555</thing>. A posit is a <em>restatement</em> if for the same appearance set, the value is the same as
+		in the immediately preceding posit with respect to their appearance times. 
+		<br/><br/>
+
+		To summarize, posits are statements that are opinionated through assertions, where the assertions themselves are also expressed
+		as posits. Certainty ranges from being certain something is completely inaccurate to it being completely accurate, with 
+		complete uncertainty midway between, which is the same as having no opinion at all. Information may change over time, where
+		a change is identified by two posits with the same appearance set, but different values at different times. 
+		<br/><br/>
+
+		If a body of information was to be expressed using Transitional modeling, or in other words, with posits, the following types
+		of searches could be performed:
+		<br/>
+		<br/> ✔︎ Search anywhere for the unique identifier <thing>42</thing>, NVP Database-like search.
+		<br/> ✔︎ Search apperances for the <role>beloved</role> role, Graph Database-like search.
+		<br/> ✔︎ Search for every time <appearance>(89, beloved)</appearance>, Graph Database-like search.
+		<br/> ✔︎ Search for when <role>beloved</role> is <value>actively felt</value>, Relational Database-like search.
+		<br/> ✔︎ Search for information as it was on <time>2009-09-21</time>, Temporal Database-like search.
+		<br/> ✔︎ Search for information given what we knew at <time>2018-02-13</time>, Bi-Temporal Database-like search.
+		<br/> ✔︎ Search assertions for disagreements between <thing>42</thing> and <thing>89</thing>, Multi-tenant Database-like search.
+		<br/> ✔︎ Search for information that is at least <value>0.75</value> reliable, Probabalistic Database-like search.
+		<br/> ✔︎ Search for corrections made between <time>2009-09-21</time> and <time>2018-02-13</time>, Audit Database-like search.
+		<br/> ✔︎ Search for how many times consensus on a posit has been reached, new feature search.
+		<br/> ✔︎ Search for how many times opposite opinions have been expressed, new feature search.
+		<br/> ✔︎ Search for individuals that have expressed themselves contradictory, new feature search.
+	</body>
+</html>
